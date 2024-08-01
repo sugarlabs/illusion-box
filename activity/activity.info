@@ -1,0 +1,9 @@
+[Activity]
+name = Illusions Box
+activity_version = 1
+bundle_id = org.sugarlabs.illusionbox
+icon = icon
+exec = sugar-activity3 activity.IllusionBoxActivity
+license = GPLv3+
+summary = Mind boggling optic illusions with explanations
+repository = https://github.com/marsian83/illusion-box.git
