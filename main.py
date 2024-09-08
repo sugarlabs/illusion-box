@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from font import Font
 import images
+import showcase
 
 class IllusionBox:
     def __init__(self):
@@ -28,6 +29,7 @@ class IllusionBox:
 
         self.gameDisplay = None
         self.info = None
+        self.update_function = None
         self.bg = (254, 252, 254)
 
     def vw(self, x):
@@ -35,6 +37,9 @@ class IllusionBox:
 
     def vh(self, y):
         return (y / 100) * self.display_rect.height
+
+    def set_screen(self, view):
+        view(self)
 
     def blit_centered(self, surf, x, y):
         rect = surf.get_rect()
@@ -44,27 +49,26 @@ class IllusionBox:
     def stop(self):
         self.running = False
 
-    # def loop(self):
-
-
     def run(self):
         self.gameDisplay = pygame.display.get_surface()
         self.info = pygame.display.Info()
         self.display_rect = self.gameDisplay.get_rect()
 
         images.load()
-        font = Font("./Geist.ttf")
+        self.font = Font("./Geist.ttf")
 
         if not (self.gameDisplay):
             self.gameDisplay = pygame.display.set_mode(
                 (self.info.current_w, self.info.current_h))
             pygame.display.set_caption("Illusion Box")
 
+        self.set_screen(showcase.view)
+
         while self.running:
             self.gameDisplay.fill(self.bg)
 
-            # if self.update_function is not None:
-            #     self.update_function()
+            if self.update_function is not None:
+                self.update_function()
 
             while Gtk.events_pending():
                 Gtk.main_iteration()

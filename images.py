@@ -16,17 +16,21 @@
 
 import os
 import pygame
+import constants
 
 store = {}
 
 def load():
-    directory = f"images"
-    for filename in os.listdir(directory):
-        if filename.endswith(".png") or filename.endswith(".jpg") or filename.endswith(".jpeg"):
-            file_path = os.path.join(directory, filename)
-            try:
-                image = pygame.image.load(file_path)
-                base_filename = os.path.splitext(filename)[0]
-                store[base_filename] = image
-            except pygame.error as err:
-                print(f"Error loading image '{file_path}': {err}")
+    for ill in constants.ILLUSIONS:
+        directory = f"images/{ill}"
+        store[ill] = {}
+        for filename in os.listdir(directory):
+            if filename.endswith(".png") or filename.endswith(".jpg"):
+                file_path = os.path.join(directory, filename)
+                try:
+                    image = pygame.image.load(file_path)
+                    base_filename = os.path.splitext(filename)[0]
+                    store[ill][base_filename] = image
+                except pygame.error as err:
+                    print(f"Error loading image '{file_path}': {err}")
+    return store

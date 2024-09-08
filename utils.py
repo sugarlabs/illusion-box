@@ -31,6 +31,29 @@ def scale_image_maintain_ratio(img, w=None, h=None):
 
     if w is None and h is None:
         return img
+    
+def scale_image_contain(img, w, h):
+    img_ratio = img.get_width() / img.get_height()
+    target_ratio = w / h
+
+    new_img = pygame.Surface((w, h), pygame.SRCALPHA)
+
+    if img_ratio > target_ratio : 
+        new_w = w
+        new_h = int(w / img_ratio)
+        sc_img = pygame.transform.scale(img, (new_w, new_h))
+        new_img.blit(sc_img, (0, (h - new_h) // 2))
+    else :
+        new_h = h
+        new_w = int(h * img_ratio)
+        sc_img = pygame.transform.scale(img, (new_w, new_h))
+        new_img.blit(sc_img, ((w - new_w) // 2, 0))
+
+    return new_img
+
 
 def array_has_no_none(arr):
     return all(element is not None for element in arr)
+
+def format_illusion_name(name):
+    return name.replace('_', ' ').title()
