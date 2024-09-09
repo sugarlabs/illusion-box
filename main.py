@@ -32,11 +32,13 @@ class IllusionBox:
         self.update_function = None
         self.bg = (254, 252, 254)
 
+        self.events = []
+
     def vw(self, x):
-        return (x / 100) * self.display_rect.width
+        return int((x / 100) * self.display_rect.width)
 
     def vh(self, y):
-        return (y / 100) * self.display_rect.height
+        return int((y / 100) * self.display_rect.height)
 
     def set_screen(self, view):
         view(self)
@@ -73,7 +75,9 @@ class IllusionBox:
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
+            self.events = []
             for event in pygame.event.get():
+                self.events.append(event)
                 if event.type == pygame.QUIT:
                     break
 
@@ -86,5 +90,5 @@ class IllusionBox:
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_mode((0, 0), pygame.RESIZABLE)
-    game = LatinSquares()
+    game = IllusionBox()
     game.run()

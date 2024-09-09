@@ -2,6 +2,7 @@ import pygame
 import utils
 import images
 from constants import ILLUSIONS
+import illusion
 
 def view(game):
     vw = game.vw
@@ -21,9 +22,8 @@ def view(game):
     CARD_PADDING = 16
 
     page = 0
-
-    # Precompute static card data such as image and text
     card_data = []
+    mouse_down = False
 
     for i in list(range(0, 6)):
         if not page + i < len(ILLUSIONS):
@@ -43,45 +43,48 @@ def view(game):
             "index": page + i
         })
 
-    def handle_input(mouse_pos, mouse_click):
+    def handle_input(mouse_pos):
         for card in card_data:
             rect = card['rect']
             if rect.collidepoint(mouse_pos):
-                # If clicked
-                if mouse_click:
-                    print(f"Card clicked: {card['index']}")
-                return card  # Return the hovered card for rendering
-
+                return card
         return None
+
+    def handle_card_click(mouse_pos, mouse_released):
+        nonlocal mouse_down
+        hovered_card = handle_input(mouse_pos)
+        if hovered_card:
+            if pygame.mouse.get_pressed()[0]:
+                mouse_down = True
+            elif mouse_released and mouse_down:
+                mouse_down = False
+                game.current_illusion = hovered_card["index"]
+                game.set_screen(illusion.view)
 
     def draw():
         mouse_pos = pygame.mouse.get_pos()
-        mouse_click = pygame.mouse.get_pressed()[0]  # Left mouse button
-
-        hovered_card = handle_input(mouse_pos, mouse_click)
+        hovered_card = handle_input(mouse_pos)
 
         for card in card_data:
             rect = card['rect']
-
             if card == hovered_card:
-                # Draw hover state
                 hover_border_rect = rect.copy()
                 hover_border_rect.x -= CARD_HVR_BORDER_WEIGHT
                 hover_border_rect.y -= CARD_HVR_BORDER_WEIGHT
                 hover_border_rect.w += CARD_HVR_BORDER_WEIGHT * 2
                 hover_border_rect.h += CARD_HVR_BORDER_WEIGHT * 2
-
                 pygame.draw.rect(game.gameDisplay, CARD_HVR_BORDER_CLR, hover_border_rect)
                 pygame.draw.rect(game.gameDisplay, CARD_HVR_CLR, rect)
             else:
-                # Draw normal state
                 pygame.draw.rect(game.gameDisplay, CARD_CLR, rect)
 
-            # Draw the precomputed image and text
             game.gameDisplay.blit(card["img"], (rect.x + CARD_PADDING, rect.y + CARD_PADDING))
             game.gameDisplay.blit(card["txt"], (rect.x + (CARD_W - card["txt"].get_width()) // 2, rect.y + (CARD_H * 88) // 100))
 
     def update():
+        mouse_released = not pygame.mouse.get_pressed()[0]
+        mouse_pos = pygame.mouse.get_pos()
         draw()
+        handle_card_click(mouse_pos, mouse_released)
 
     game.update_function = update
