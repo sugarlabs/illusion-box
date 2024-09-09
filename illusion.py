@@ -38,6 +38,7 @@ def view(game):
     BACK_BUTTON_HOVER_COLOR = (170, 170, 170)
     BACK_TEXT_COLOR = (0, 0, 0)
     BACK_TEXT = game.font.lg.render("Back", True, BACK_TEXT_COLOR)
+    IMAGES_COUNT = len(images.store[ILLUSIONS[illusion]])
     back_txt_x = BACK_BUTTON_RECT.x + (BACK_BUTTON_RECT.w - BACK_TEXT.get_width()) // 2
     back_txt_y = BACK_BUTTON_RECT.y + (BACK_BUTTON_RECT.h - BACK_TEXT.get_height()) // 2
 
@@ -47,9 +48,13 @@ def view(game):
     def rotate_img():
         nonlocal img, label, m_x, m_y, index
 
-        index = (index + 1) % len(images.store[ILLUSIONS[illusion]])
+        index = (index + 1) % IMAGES_COUNT
 
-        img = utils.scale_image_contain(images.store[ILLUSIONS[illusion]][f"{index + 1}"], w=vw(90), h=vh(75))
+        if IMAGES_COUNT > 1:
+            img = utils.scale_image_contain(images.store[ILLUSIONS[illusion]][f"{index + 1}"], w=vw(90), h=vh(75))
+        else:
+            img = utils.scale_image_contain(images.store[ILLUSIONS[illusion]][f"{index + 1}"], w=vw(90), h=vh(85))
+
         label = game.font.xxl.render(utils.format_illusion_name(ILLUSIONS[illusion]) + " Illusion", True, (0, 0, 0))
         m_x = vw(50) - img.get_width() // 2
         m_y = vh(50) - img.get_height() // 2
@@ -77,7 +82,8 @@ def view(game):
 
         game.gameDisplay.blit(img, (m_x, m_y))
         game.gameDisplay.blit(label, (vw(50) - label.get_width() // 2, vh(1)))
-        game.gameDisplay.blit(btm_txt, (b_t_x, vh(93)))
+        if IMAGES_COUNT > 1:
+            game.gameDisplay.blit(btm_txt, (b_t_x, vh(93)))
 
         draw_back_button()
 

@@ -4,5 +4,6 @@ ILLUSIONS = [
     "zollner_lines",
     "muller_lyer",
     "ponzo",
+    "revolving_circles",
     "shepard_tables"
 ]
