@@ -22,6 +22,7 @@ from font import Font
 import images
 import showcase
 
+
 class IllusionBox:
     def __init__(self):
         self.running = True

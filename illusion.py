@@ -20,6 +20,7 @@ import images
 import showcase
 from constants import ILLUSIONS
 
+
 def view(game):
     vw = game.vw
     vh = game.vh
@@ -30,7 +31,11 @@ def view(game):
     label = None
     m_x = 0
     m_y = 0
-    btm_txt = game.font.xl.render("Press <Spacebar> to cycle through images and see the illusion", True, (0, 0, 0))
+    btm_txt = game.font.xl.render(
+        "Press <Spacebar> to cycle through images and see the illusion",
+        True,
+        (0, 0, 0),
+    )
     b_t_x = vw(50) - btm_txt.get_width() // 2
 
     BACK_BUTTON_RECT = pygame.Rect(vw(1), vh(1), vw(15), vh(8))
@@ -39,8 +44,12 @@ def view(game):
     BACK_TEXT_COLOR = (0, 0, 0)
     BACK_TEXT = game.font.lg.render("Back", True, BACK_TEXT_COLOR)
     IMAGES_COUNT = len(images.store[ILLUSIONS[illusion]])
-    back_txt_x = BACK_BUTTON_RECT.x + (BACK_BUTTON_RECT.w - BACK_TEXT.get_width()) // 2
-    back_txt_y = BACK_BUTTON_RECT.y + (BACK_BUTTON_RECT.h - BACK_TEXT.get_height()) // 2
+    back_txt_x = (
+        BACK_BUTTON_RECT.x + (BACK_BUTTON_RECT.w - BACK_TEXT.get_width()) // 2
+    )
+    back_txt_y = (
+        BACK_BUTTON_RECT.y + (BACK_BUTTON_RECT.h - BACK_TEXT.get_height()) // 2
+    )
 
     mouse_pos = (0, 0)
     mouse_down = False
@@ -51,19 +60,35 @@ def view(game):
         index = (index + 1) % IMAGES_COUNT
 
         if IMAGES_COUNT > 1:
-            img = utils.scale_image_contain(images.store[ILLUSIONS[illusion]][f"{index + 1}"], w=vw(90), h=vh(75))
+            img = utils.scale_image_contain(
+                images.store[ILLUSIONS[illusion]][f"{index + 1}"],
+                w=vw(90),
+                h=vh(75),
+            )
         else:
-            img = utils.scale_image_contain(images.store[ILLUSIONS[illusion]][f"{index + 1}"], w=vw(90), h=vh(85))
+            img = utils.scale_image_contain(
+                images.store[ILLUSIONS[illusion]][f"{index + 1}"],
+                w=vw(90),
+                h=vh(85),
+            )
 
-        label = game.font.xxl.render(utils.format_illusion_name(ILLUSIONS[illusion]) + " Illusion", True, (0, 0, 0))
+        label = game.font.xxl.render(
+            utils.format_illusion_name(ILLUSIONS[illusion]) + " Illusion",
+            True,
+            (0, 0, 0),
+        )
         m_x = vw(50) - img.get_width() // 2
         m_y = vh(50) - img.get_height() // 2
 
     def draw_back_button():
         if BACK_BUTTON_RECT.collidepoint(mouse_pos):
-            pygame.draw.rect(game.gameDisplay, BACK_BUTTON_HOVER_COLOR, BACK_BUTTON_RECT)
+            pygame.draw.rect(
+                game.gameDisplay, BACK_BUTTON_HOVER_COLOR, BACK_BUTTON_RECT
+            )
         else:
-            pygame.draw.rect(game.gameDisplay, BACK_BUTTON_COLOR, BACK_BUTTON_RECT)
+            pygame.draw.rect(game.gameDisplay,
+                             BACK_BUTTON_COLOR,
+                             BACK_BUTTON_RECT)
 
         game.gameDisplay.blit(BACK_TEXT, (back_txt_x, back_txt_y))
 
@@ -73,7 +98,7 @@ def view(game):
         if BACK_BUTTON_RECT.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
                 mouse_down = True
-            elif mouse_down:  
+            elif mouse_down:
                 mouse_down = False
                 game.set_screen(showcase.view)
 

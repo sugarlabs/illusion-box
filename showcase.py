@@ -1,8 +1,10 @@
+# Import necessary libraries
 import pygame
 import utils
 import images
 from constants import ILLUSIONS
 import illusion
+
 
 def view(game):
     vw = game.vw
@@ -45,8 +47,16 @@ def view(game):
             y = PAD_Y + (i // 3) * (CARD_H + CARD_GAP_Y)
             rect = pygame.Rect((x, y), (CARD_W, CARD_H))
 
-            img = utils.scale_image_contain(images.store[ILLUSIONS[page + i]]["1"], w=CARD_W - CARD_PADDING * 2, h=(CARD_H * 8) // 10)
-            txt = game.font.xl.render(utils.format_illusion_name(ILLUSIONS[page + i]), True, TEXT_COLOR)
+            img = utils.scale_image_contain(
+                images.store[ILLUSIONS[page + i]]["1"],
+                w=CARD_W - CARD_PADDING * 2,
+                h=(CARD_H * 8) // 10,
+            )
+            txt = game.font.xl.render(
+                utils.format_illusion_name(ILLUSIONS[page + i]),
+                True,
+                TEXT_COLOR,
+            )
 
             card_data.append({
                 "rect": rect,
@@ -80,13 +90,28 @@ def view(game):
         right_hovered = right_btn_rect.collidepoint(pygame.mouse.get_pos())
 
         if page > 0:
-            pygame.draw.rect(game.gameDisplay, BTN_HVR_CLR if left_hovered else BTN_CLR, left_btn_rect)
-            game.gameDisplay.blit(left_text, (left_btn_rect.centerx - left_text.get_width() // 2, left_btn_rect.centery - left_text.get_height() // 2))
-        
-        if page + 6 < len(ILLUSIONS):
-            pygame.draw.rect(game.gameDisplay, BTN_HVR_CLR if right_hovered else BTN_CLR, right_btn_rect)
-            game.gameDisplay.blit(right_text, (right_btn_rect.centerx - right_text.get_width() // 2, right_btn_rect.centery - right_text.get_height() // 2))
+            pygame.draw.rect(
+                game.gameDisplay,
+                BTN_HVR_CLR if left_hovered else BTN_CLR,
+                left_btn_rect,
+            )
+            game.gameDisplay.blit(
+                left_text,
+                (left_btn_rect.centerx - left_text.get_width() // 2,
+                 left_btn_rect.centery - left_text.get_height() // 2),
+            )
 
+        if page + 6 < len(ILLUSIONS):
+            pygame.draw.rect(
+                game.gameDisplay,
+                BTN_HVR_CLR if right_hovered else BTN_CLR,
+                right_btn_rect,
+            )
+            game.gameDisplay.blit(
+                right_text,
+                (right_btn_rect.centerx - right_text.get_width() // 2,
+                 right_btn_rect.centery - right_text.get_height() // 2),
+            )
 
         return left_btn_rect, right_btn_rect
 
@@ -104,7 +129,8 @@ def view(game):
             if left_btn_rect.collidepoint(mouse_pos) and page > 0:
                 page -= 6
                 load_cards()
-            elif right_btn_rect.collidepoint(mouse_pos) and page + 6 < len(ILLUSIONS):
+            elif (right_btn_rect.collidepoint(mouse_pos) and
+                  page + 6 < len(ILLUSIONS)):
                 page += 6
                 load_cards()
 
@@ -120,13 +146,23 @@ def view(game):
                 hover_border_rect.y -= CARD_HVR_BORDER_WEIGHT
                 hover_border_rect.w += CARD_HVR_BORDER_WEIGHT * 2
                 hover_border_rect.h += CARD_HVR_BORDER_WEIGHT * 2
-                pygame.draw.rect(game.gameDisplay, CARD_HVR_BORDER_CLR, hover_border_rect)
-                pygame.draw.rect(game.gameDisplay, CARD_HVR_CLR, rect)
+                pygame.draw.rect(game.gameDisplay,
+                                 CARD_HVR_BORDER_CLR,
+                                 hover_border_rect)
+                pygame.draw.rect(game.gameDisplay,
+                                 CARD_HVR_CLR,
+                                 rect)
             else:
                 pygame.draw.rect(game.gameDisplay, CARD_CLR, rect)
 
-            game.gameDisplay.blit(card["img"], (rect.x + CARD_PADDING, rect.y + CARD_PADDING))
-            game.gameDisplay.blit(card["txt"], (rect.x + (CARD_W - card["txt"].get_width()) // 2, rect.y + (CARD_H * 88) // 100))
+            game.gameDisplay.blit(card["img"],
+                                  (rect.x + CARD_PADDING,
+                                   rect.y + CARD_PADDING))
+            game.gameDisplay.blit(
+                card["txt"],
+                (rect.x + (CARD_W - card["txt"].get_width()) // 2,
+                 rect.y + (CARD_H * 88) // 100),
+            )
 
     def update():
         mouse_pos = pygame.mouse.get_pos()

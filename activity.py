@@ -26,7 +26,6 @@ from sugar3.activity.widgets import StopButton
 
 import sugargame.canvas
 
-from gettext import gettext as _
 from main import IllusionBox
 
 
@@ -39,9 +38,9 @@ class IllusionBoxActivity(Activity):
         self.game = IllusionBox()
         self.build_toolbar()
         self.game.canvas = sugargame.canvas.PygameCanvas(
-                self,
-                main=self.game.run,
-                modules=[pygame.display, pygame.font, pygame.mixer])
+            self,
+            main=self.game.run,
+            modules=[pygame.display, pygame.font, pygame.mixer])
         self.set_canvas(self.game.canvas)
         self.game.canvas.grab_focus()
 

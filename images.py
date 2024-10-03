@@ -20,6 +20,7 @@ import constants
 
 store = {}
 
+
 def load():
     for ill in constants.ILLUSIONS:
         directory = f"images/{ill}"
