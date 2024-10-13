@@ -20,7 +20,7 @@ Some of the illusions included are:
 How to run
 ===========
 
-River Crossing can be run on the Sugar desktop.
+Illusion Box can be run on the Sugar desktop.
 
 * [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/)
 
